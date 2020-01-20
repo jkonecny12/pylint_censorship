@@ -17,8 +17,6 @@
 
 __all__ = ["CensoreshipLinter", "CensoreshipConfig"]
 
-import sys
-
 import pylint.epylint as lint
 
 
@@ -32,10 +30,15 @@ class CensoreshipConfig(object):
         false_possitives: List of false positives you want to filter out.
 
         pylintrc_path: Path to the Pylint configuration file. Everything except false positives
-                           should be configured there.
+                       should be configured there. You can also pass pylintrc as argument to
+                       command_line_args in that case the command_line_args rc file will
+                       taken instead.
+
+        command_line_args: Pass this list of command_line_args to pylint.
         """
         self.false_positives = []
-        self.pylintrc_path = []
+        self.pylintrc_path = ""
+        self.command_line_args = []
 
 
 class CensoreshipLinter(object):
@@ -62,10 +65,10 @@ class CensoreshipLinter(object):
 
     def _prepare_args(self):
         # skip first from argv it contains name of the running script
-        if len(sys.argv) == 1:
+        if not self._config.command_line_args:
             return ""
 
-        args = sys.argv[1:]
+        args = self._config.command_line_args
 
         if self._config.pylintrc_path and "--pylintrc" not in args:
             args.append("--pylintrc")
