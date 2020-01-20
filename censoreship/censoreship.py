@@ -17,6 +17,10 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+import pylint.epylint as lint
 
 if __name__ == '__main__':
-    print("ABC")
+    # FIXME: Make this dynamic and remove fixed place
+    (pylint_stdout, pylint_stderr) = lint.py_run(command_options="./censoreship", return_std=True)
+
+    print(pylint_stdout.read())
