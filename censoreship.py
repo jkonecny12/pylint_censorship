@@ -17,10 +17,23 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-import pylint.epylint as lint
+__all__ = []
+
+import sys
+
+from censoreship import CensoreshipConfig, CensoreshipLinter
+
+
+class MyConfig(CensoreshipConfig):
+    """This is basic test class for configuration."""
+    def __init__(self):
+        super().__init__()
+
+        self.command_line_args = sys.argv[1:]
+
 
 if __name__ == '__main__':
-    # FIXME: Make this dynamic and remove fixed place
-    (pylint_stdout, pylint_stderr) = lint.py_run(command_options="./censoreship", return_std=True)
+    config = MyConfig()
+    linter = CensoreshipLinter(config)
 
-    print(pylint_stdout.read())
+    linter.run()
