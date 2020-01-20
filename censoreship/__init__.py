@@ -23,18 +23,19 @@ import pylint.epylint as lint
 
 
 class CensoreshipConfig(object):
-    """Configuration of False Positives you want to run by Pylint.
-
-    Attributes:
-
-    false_possitives: List of false positives you want to filter out.
-
-    pylintrc_path: Path to the Pylint configuration file. Everything except false positives
-                   should be configured there.
-    """
+    """Configuration of False Positives you want to run by Pylint."""
     def __init__(self):
+        """Create a configuration object.
+
+        Attributes:
+
+        false_possitives: List of false positives you want to filter out.
+
+        command_line_args: Path to the Pylint configuration file. Everything except false positives
+                           should be configured there.
+        """
         self.false_positives = []
-        self.pylintrc_path = []
+        self.command_line_args = []
 
 
 class CensoreshipLinter(object):
