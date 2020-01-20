@@ -31,11 +31,11 @@ class CensoreshipConfig(object):
 
         false_possitives: List of false positives you want to filter out.
 
-        command_line_args: Path to the Pylint configuration file. Everything except false positives
+        pylintrc_path: Path to the Pylint configuration file. Everything except false positives
                            should be configured there.
         """
         self.false_positives = []
-        self.command_line_args = []
+        self.pylintrc_path = []
 
 
 class CensoreshipLinter(object):
