@@ -64,7 +64,6 @@ class CensoreshipLinter(object):
             (self._stdout, self._sterr) = lint.py_run(return_std=True)
 
     def _prepare_args(self):
-        # skip first from argv it contains name of the running script
         if not self._config.command_line_args:
             return ""
 
