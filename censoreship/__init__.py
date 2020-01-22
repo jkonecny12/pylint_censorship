@@ -81,8 +81,8 @@ class CensoreshipLinter(object):
         if self._config.command_line_args:
             args = self._config.command_line_args
 
-        if self._config.pylintrc_path and "--pylintrc" not in args:
-            args.append("--pylintrc")
+        if self._config.pylintrc_path and "--rcfile" not in args:
+            args.append("--rcfile")
             args.append(self._config.pylintrc_path)
 
         args.append(self._config.top_check_dir)
