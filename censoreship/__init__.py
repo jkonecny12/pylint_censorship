@@ -73,18 +73,15 @@ class CensoreshipLinter(object):
         """
         args = self._prepare_args()
 
-        if args:
-            (self._stdout, self._stderr) = lint.py_run(command_options=args, return_std=True)
-        else:
-            (self._stdout, self._stderr) = lint.py_run(return_std=True)
+        (self._stdout, self._stderr) = lint.py_run(command_options=args, return_std=True)
 
         return self._process_output()
 
     def _prepare_args(self):
-        if not self._config.command_line_args:
-            return ""
+        args = []
 
-        args = self._config.command_line_args
+        if self._config.command_line_args:
+            args = self._config.command_line_args
 
         if self._config.pylintrc_path and "--pylintrc" not in args:
             args.append("--pylintrc")
