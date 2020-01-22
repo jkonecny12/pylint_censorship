@@ -17,7 +17,6 @@
 
 __all__ = ["CensoreshipLinter", "CensoreshipConfig"]
 
-import os
 import sys
 
 import pylint.epylint as lint
