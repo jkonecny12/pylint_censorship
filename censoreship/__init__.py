@@ -90,7 +90,7 @@ class CensoreshipLinter(object):
         args.append(self._config.top_check_dir)
 
         if args:
-            args = args.join(" ")
+            args = " ".join(args)
 
         return args
 
