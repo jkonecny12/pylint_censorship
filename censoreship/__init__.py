@@ -38,13 +38,10 @@ class CensoreshipConfig(object):
                        taken instead.
 
         command_line_args: Pass this list of command_line_args to pylint.
-
-        log_file: Log file path with the pylint output. Default settings is path to this script.
         """
         self.false_positives = []
         self.pylintrc_path = ""
         self.command_line_args = []
-        self.log_file = os.path.realpath(__file__)
 
 
 class CensoreshipLinter(object):
@@ -88,10 +85,12 @@ class CensoreshipLinter(object):
 
     def _process_output(self):
         stderr = self._stderr.read()
-        if stderr:
-            self._write_to_log(self._stderr)
-            sys.exit(1)
+        stdout = self._stdout.read()
 
-    def _write_to_log(self, stream):
-        with open(self._config.log_file, "wt") as f:
-            f.write(stream.read())
+        if stderr:
+            print(stderr, sys.stderr)
+            sys.exit(2)
+        elif stdout:
+            if stdout:
+                print(stdout)
+                sys.exit(1)
