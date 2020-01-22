@@ -18,11 +18,23 @@
 __all__ = ["CensoreshipLinter", "CensoreshipConfig"]
 
 import sys
+import re
 import pylint.lint
 
 from io import StringIO
 
 from pylint.reporters.text import TextReporter
+
+
+class FalsePositive(object):
+    """An object used in filtering out incorrect results from pylint.  Pass in
+       a regular expression matching a pylint error message that should be
+       ignored.  This object can also be used to keep track of how often it is
+       used, for auditing that false positives are still useful.
+    """
+    def __init__(self, regex):
+        self.regex = regex
+        self.used = 0
 
 
 class CensoreshipConfig(object):
@@ -32,7 +44,7 @@ class CensoreshipConfig(object):
 
         Attributes:
 
-        false_possitives: List of false positives you want to filter out.
+        false_possitives: List of FalsePositive instances you want to filter out.
 
         pylintrc_path: Path to the Pylint configuration file. Everything except false positives
                        should be configured there. You can also pass pylintrc as argument to
@@ -99,13 +111,60 @@ class CensoreshipLinter(object):
 
         return args
 
+    def _filter_false_positives(self, lines):
+        if not self._config.false_positives:
+            return lines
+
+        lines = lines.split("\n")
+
+        temp_line = ""
+        retval = []
+
+        for line in lines:
+
+            # This is not an error message.  Ignore it.
+            if line.startswith("Using config file"):
+                retval.append(line)
+            elif not line.strip():
+                retval.append(line)
+            elif line.startswith("*****"):
+                temp_line = line
+            else:
+                if self._check_false_positive(line):
+                    if temp_line:
+                        retval.append(temp_line)
+                        temp_line = ""
+
+                    retval.append(line)
+
+        return "\n".join(retval)
+
+    def _check_false_positive(self, line):
+        validError = True
+
+        for regex in self._config.false_positives:
+            if re.search(regex.regex, line):
+                # The false positive was hit, so record that and ignore
+                # the message from pylint.
+                regex.used += 1
+                validError = False
+                break
+
+        # If any false positive matched the error message, it's a valid
+        # error from pylint.
+        return validError
+
     def _process_output(self):
         stdout = self._stdout.getvalue()
         self._stdout.close()
 
-        if stdout:
-            print(stdout)
-            sys.stdout.flush()
-            return 1
+        rc = 0
 
-        return 0
+        if stdout:
+            filtered_stdout = self._filter_false_positives(stdout)
+            if filtered_stdout:
+                print(filtered_stdout)
+                sys.stdout.flush()
+                rc = 1
+
+        return rc
