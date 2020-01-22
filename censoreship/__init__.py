@@ -44,10 +44,15 @@ class CensoreshipConfig(object):
         self.command_line_args = []
 
     @property
-    def top_check_dir(self):
-        """Get top directory of files to check."""
-        raise AttributeError("No test directory specified. Please override "
-                             "CensoreshipConfig.top_check_dir property!")
+    def check_paths(self):
+        """Get paths to check.
+
+        These can be python modules or files.
+
+        :return: string with paths separated by space
+        """
+        raise AttributeError("No test paths are specified. Please override "
+                             "CensoreshipConfig.check_paths property!")
 
 
 class CensoreshipLinter(object):
@@ -71,6 +76,8 @@ class CensoreshipLinter(object):
         """
         args = self._prepare_args()
 
+        print("Running pylint with args: ", args)
+
         (self._stdout, self._stderr) = lint.py_run(command_options=args, return_std=True)
 
         return self._process_output()
@@ -85,7 +92,7 @@ class CensoreshipLinter(object):
             args.append("--rcfile")
             args.append(self._config.pylintrc_path)
 
-        args.append(self._config.top_check_dir)
+        args.append(self._config.check_paths)
 
         if args:
             args = " ".join(args)
