@@ -17,6 +17,7 @@
 
 __all__ = ["CensoreshipLinter", "CensoreshipConfig"]
 
+import sys
 import pylint.lint
 
 from io import StringIO
@@ -104,6 +105,7 @@ class CensoreshipLinter(object):
 
         if stdout:
             print(stdout)
+            sys.stdout.flush()
             return 1
 
         return 0
