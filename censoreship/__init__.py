@@ -65,9 +65,9 @@ class CensoreshipLinter(object):
         args = self._prepare_args()
 
         if args:
-            (self._stdout, self._sterr) = lint.py_run(command_options=args, return_std=True)
+            (self._stdout, self._stderr) = lint.py_run(command_options=args, return_std=True)
         else:
-            (self._stdout, self._sterr) = lint.py_run(return_std=True)
+            (self._stdout, self._stderr) = lint.py_run(return_std=True)
 
         self._process_output()
 
