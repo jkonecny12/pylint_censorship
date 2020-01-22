@@ -45,11 +45,9 @@ class CensoreshipConfig(object):
 
     @property
     def top_check_dir(self):
-        """Get top directory of files to check.
-
-        By default top_srcdir system environment will be taken.
-        """
-        return os.environ.get("top_srcdir", os.getcwd())
+        """Get top directory of files to check."""
+        raise AttributeError("No test directory specified. Please override "
+                             "CensoreshipConfig.top_check_dir property!")
 
 
 class CensoreshipLinter(object):
