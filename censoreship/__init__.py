@@ -17,7 +17,7 @@
 
 __all__ = ["CensoreshipLinter", "CensoreshipConfig"]
 
-import os.path
+import os
 import sys
 
 import pylint.epylint as lint
@@ -42,6 +42,14 @@ class CensoreshipConfig(object):
         self.false_positives = []
         self.pylintrc_path = ""
         self.command_line_args = []
+
+    @property
+    def top_check_dir(self):
+        """Get top directory of files to check.
+
+        By default top_srcdir system environment will be taken.
+        """
+        return os.environ.get("top_srcdir", os.getcwd())
 
 
 class CensoreshipLinter(object):
@@ -81,6 +89,8 @@ class CensoreshipLinter(object):
         if self._config.pylintrc_path and "--pylintrc" not in args:
             args.append("--pylintrc")
             args.append(self._config.pylintrc_path)
+
+        args.append(self._config.top_check_dir)
 
         if args:
             args = args.join(" ")
