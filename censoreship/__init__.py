@@ -58,7 +58,11 @@ class CensoreshipLinter(object):
         self._config = config
 
     def run(self):
-        """Run the pylint."""
+        """Run the pylint static linter.
+
+        :return: return code of the linter run
+        :rtype: int
+        """
         args = self._prepare_args()
 
         if args:
@@ -66,7 +70,7 @@ class CensoreshipLinter(object):
         else:
             (self._stdout, self._stderr) = lint.py_run(return_std=True)
 
-        self._process_output()
+        return self._process_output()
 
     def _prepare_args(self):
         if not self._config.command_line_args:
@@ -89,8 +93,10 @@ class CensoreshipLinter(object):
 
         if stderr:
             print(stderr, sys.stderr)
-            sys.exit(2)
+            return 2
         elif stdout:
             if stdout:
                 print(stdout)
-                sys.exit(1)
+                return 1
+
+        return 0
