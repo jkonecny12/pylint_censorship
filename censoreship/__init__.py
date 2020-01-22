@@ -154,6 +154,19 @@ class CensoreshipLinter(object):
         # error from pylint.
         return validError
 
+    def _report_unused_false_positives(self):
+        unused = []
+
+        for fp in self._config.false_positives:
+            if fp.used == 0:
+                unused.append(fp.regex)
+
+        if unused:
+            print("************* Unused False Positives Found:")
+
+            for fp in unused:
+                print(fp)
+
     def _process_output(self):
         stdout = self._stdout.getvalue()
         self._stdout.close()
@@ -166,5 +179,7 @@ class CensoreshipLinter(object):
                 print(filtered_stdout)
                 sys.stdout.flush()
                 rc = 1
+
+        self._report_unused_false_positives()
 
         return rc
