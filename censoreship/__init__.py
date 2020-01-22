@@ -95,7 +95,7 @@ class CensoreshipLinter(object):
             args.append("--rcfile")
             args.append(self._config.pylintrc_path)
 
-        args.append(self._config.check_paths)
+        args.extend(self._config.check_paths)
 
         return args
 
