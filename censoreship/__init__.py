@@ -17,9 +17,11 @@
 
 __all__ = ["CensoreshipLinter", "CensoreshipConfig"]
 
-import sys
+import pylint.lint
 
-import pylint.epylint as lint
+from io import StringIO
+
+from pylint.reporters.text import TextReporter
 
 
 class CensoreshipConfig(object):
@@ -63,8 +65,7 @@ class CensoreshipLinter(object):
         :param config: configuration class for this Linter
         :type config: CensoreshipConfig class instance
         """
-        self._stdout = None
-        self._stderr = None
+        self._stdout = StringIO()
         self._config = config
 
     def run(self):
@@ -77,7 +78,9 @@ class CensoreshipLinter(object):
 
         print("Running pylint with args: ", args)
 
-        (self._stdout, self._stderr) = lint.py_run(command_options=args, return_std=True)
+        pylint.lint.Run(args,
+                        reporter=TextReporter(self._stdout),
+                        do_exit=False)
 
         return self._process_output()
 
@@ -93,21 +96,14 @@ class CensoreshipLinter(object):
 
         args.append(self._config.check_paths)
 
-        if args:
-            args = " ".join(args)
-
         return args
 
     def _process_output(self):
-        stderr = self._stderr.read()
-        stdout = self._stdout.read()
+        stdout = self._stdout.getvalue()
+        self._stdout.close()
 
-        if stderr:
-            print(stderr, sys.stderr)
-            return 2
-        elif stdout:
-            if stdout:
-                print(stdout)
-                return 1
+        if stdout:
+            print(stdout)
+            return 1
 
         return 0
