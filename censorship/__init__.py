@@ -15,7 +15,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-__all__ = ["CensoreshipLinter", "CensoreshipConfig"]
+__all__ = ["CensorshipLinter", "CensorshipConfig"]
 
 import sys
 import re
@@ -37,7 +37,7 @@ class FalsePositive(object):
         self.used = 0
 
 
-class CensoreshipConfig(object):
+class CensorshipConfig(object):
     """Configuration of False Positives you want to run by Pylint."""
     def __init__(self):
         """Create a configuration object.
@@ -66,17 +66,17 @@ class CensoreshipConfig(object):
         :return: string with paths separated by space
         """
         raise AttributeError("No test paths are specified. Please override "
-                             "CensoreshipConfig.check_paths property!")
+                             "CensorshipConfig.check_paths property!")
 
 
-class CensoreshipLinter(object):
+class CensorshipLinter(object):
     """Run pylint linter and modify it's output."""
 
     def __init__(self, config):
         """Create CenshoreshipLinter class.
 
         :param config: configuration class for this Linter
-        :type config: CensoreshipConfig class instance
+        :type config: CensorshipConfig class instance
         """
         self._stdout = StringIO()
         self._config = config

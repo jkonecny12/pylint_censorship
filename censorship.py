@@ -21,10 +21,10 @@ __all__ = []
 
 import sys
 
-from censoreship import CensoreshipConfig, CensoreshipLinter
+from censorship import CensorshipConfig, CensorshipLinter
 
 
-class MyConfig(CensoreshipConfig):
+class MyConfig(CensorshipConfig):
     """This is basic test class for configuration."""
     def __init__(self):
         super().__init__()
@@ -34,6 +34,6 @@ class MyConfig(CensoreshipConfig):
 
 if __name__ == '__main__':
     config = MyConfig()
-    linter = CensoreshipLinter(config)
+    linter = CensorshipLinter(config)
 
     linter.run()
