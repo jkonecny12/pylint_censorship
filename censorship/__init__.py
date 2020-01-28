@@ -20,6 +20,9 @@ This module is the main implementation. It contains configuration and linter cla
 
 All the configuration should be handled by CensorshipConfig class instance. Linter class then
 use this configuration to run the pylint and filter the results.
+
+To be able to use this library correctly you have to add this to your pylint configuration file:
+msg-template='{msg_id}({symbol}):{path}:{line},{column}: {obj}: {msg}'
 """
 
 __all__ = ["CensorshipLinter", "CensorshipConfig"]

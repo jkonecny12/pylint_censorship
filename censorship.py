@@ -33,6 +33,7 @@ class MyConfig(CensorshipConfig):
         super().__init__()
 
         self.command_line_args = sys.argv[1:]
+        self.pylintrc_path = "./pylintrc"
 
     @property
     def check_paths(self):
