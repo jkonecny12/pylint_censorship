@@ -15,18 +15,26 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+"""
+This module is the main implementation. It contains configuration and linter classes.
+
+All the configuration should be handled by CensorshipConfig class instance. Linter class then
+use this configuration to run the pylint and filter the results.
+"""
+
 __all__ = ["CensorshipLinter", "CensorshipConfig"]
 
 import sys
 import re
-import pylint.lint
 
 from io import StringIO
+
+import pylint.lint
 
 from pylint.reporters.text import TextReporter
 
 
-class FalsePositive(object):
+class FalsePositive():
     """An object used in filtering out incorrect results from pylint.  Pass in
        a regular expression matching a pylint error message that should be
        ignored.  This object can also be used to keep track of how often it is
@@ -37,7 +45,7 @@ class FalsePositive(object):
         self.used = 0
 
 
-class CensorshipConfig(object):
+class CensorshipConfig():
     """Configuration of False Positives you want to run by Pylint."""
     def __init__(self):
         """Create a configuration object.
@@ -69,7 +77,7 @@ class CensorshipConfig(object):
                              "CensorshipConfig.check_paths property!")
 
 
-class CensorshipLinter(object):
+class CensorshipLinter():
     """Run pylint linter and modify it's output."""
 
     def __init__(self, config):
@@ -140,19 +148,19 @@ class CensorshipLinter(object):
         return "\n".join(retval)
 
     def _check_false_positive(self, line):
-        validError = True
+        valid_error = True
 
         for regex in self._config.false_positives:
             if re.search(regex.regex, line):
                 # The false positive was hit, so record that and ignore
                 # the message from pylint.
                 regex.used += 1
-                validError = False
+                valid_error = False
                 break
 
         # If any false positive matched the error message, it's a valid
         # error from pylint.
-        return validError
+        return valid_error
 
     def _report_unused_false_positives(self):
         unused = []

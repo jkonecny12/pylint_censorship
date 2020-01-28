@@ -17,9 +17,8 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#
-# This is just an example implementation.
-#
+"""This is just an example implementation."""
+
 
 __all__ = []
 
