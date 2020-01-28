@@ -17,6 +17,10 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+#
+# This is just an example implementation.
+#
+
 __all__ = []
 
 import sys
@@ -30,6 +34,16 @@ class MyConfig(CensorshipConfig):
         super().__init__()
 
         self.command_line_args = sys.argv[1:]
+
+    @property
+    def check_paths(self):
+        """Get paths to check.
+
+        These can be python modules or files.
+
+        :return: list of paths
+        """
+        return ["./censorship", __file__]
 
 
 if __name__ == '__main__':

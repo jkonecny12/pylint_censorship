@@ -63,7 +63,7 @@ class CensorshipConfig(object):
 
         These can be python modules or files.
 
-        :return: string with paths separated by space
+        :return: list of paths
         """
         raise AttributeError("No test paths are specified. Please override "
                              "CensorshipConfig.check_paths property!")
