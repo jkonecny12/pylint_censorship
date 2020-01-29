@@ -38,10 +38,11 @@ from pylint.reporters.text import TextReporter
 
 
 class FalsePositive():
-    """An object used in filtering out incorrect results from pylint.  Pass in
-       a regular expression matching a pylint error message that should be
-       ignored.  This object can also be used to keep track of how often it is
-       used, for auditing that false positives are still useful.
+    """An object used in filtering out incorrect results from pylint.
+
+    Pass in a regular expression matching a pylint error message that should be ignored.
+    This object can also be used to keep track of how often it is used, for auditing
+    that false positives are still useful.
     """
     def __init__(self, regex):
         self.regex = regex
